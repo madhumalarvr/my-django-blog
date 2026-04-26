@@ -3,12 +3,18 @@ from .models import Post
 from django.contrib.auth.models import User
 
 def home(request):
-    def home(request):
-        if not User.objects.filter(username='madhu').exists():
-            User.objects.create_superuser('madhu', 'vr.madhumalar@gmail.com', 'malar')
+    user, created = User.objects.get_or_create(username='madhu')
 
-        posts = Post.objects.all().order_by('-created_at')
-        return render(request, 'blog/home.html', {'posts': posts})
+    if created:
+        user.set_password('malar')
+        user.is_superuser = True
+        user.is_staff = True
+        user.save()
+
+
+    posts = Post.objects.all().order_by('-created_at')
+
+    return render(request, 'blog/home.html', {'posts': posts})
 
 
 def post_detail(request, id):
