@@ -3,12 +3,6 @@ from .models import Post
 from django.contrib.auth.models import User
 
 def home(request):
-    user, created = User.objects.get_or_create(username='madhu')
-
-    user.set_password('malar')
-    user.is_superuser = True
-    user.is_staff = True
-    user.save()
 
     posts = Post.objects.all().order_by('-created_at')
 
